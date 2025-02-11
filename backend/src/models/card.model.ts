@@ -13,7 +13,11 @@ const CardSchema: Schema = new Schema(
     description: { type: String },
     column: {
       type: String,
-      enum: ['todo', 'inProgress', 'done'],
+      column: {
+        type: String,
+        enum: ['ToDo', 'In Progress', 'Done'],
+        required: true,
+      },
       required: true,
     },
     boardId: {

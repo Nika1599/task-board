@@ -1,6 +1,21 @@
 import { Request, Response } from 'express';
 import Card from '../models/card.model';
 
+export const getCardsByBoardId = async (req: Request, res: Response) => {
+  try {
+    const { boardId } = req.query;
+    if (!boardId) {
+      return res.status(400).json({ message: 'Board ID is required' });
+    }
+
+    const cards = await Card.find({ boardId });
+    res.json(cards);
+  } catch (err) {
+    res.status(500).json({
+      message: err instanceof Error ? err.message : 'Something went wrong',
+    });
+  }
+};
 export const createCard = async (req: Request, res: Response) => {
   try {
     const { title, description, column, boardId } = req.body;

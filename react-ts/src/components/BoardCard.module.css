@@ -1,0 +1,17 @@
+.boardCard {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  border-radius: 12px;
+  padding: 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.boardCard:hover {
+  background: linear-gradient(135deg, #2948ff, #396afc);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
