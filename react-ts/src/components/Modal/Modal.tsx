@@ -4,10 +4,11 @@ import styles from "./Modal.module.css";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (title: string, description?: string) => void; // description - опціонально
+  onSubmit: (title: string, description?: string) => void;
   onCancel?: () => void;
   title: string;
   buttonLabel: string;
+  children?: React.ReactNode;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -18,23 +19,20 @@ const Modal: React.FC<ModalProps> = ({
   title,
   buttonLabel,
 }) => {
-  const [inputTitle, setInputTitle] = useState(""); // Стан для введення заголовка картки
-  const [inputDescription, setInputDescription] = useState(""); // Стан для введення опису картки
+  const [inputTitle, setInputTitle] = useState("");
+  const [inputDescription, setInputDescription] = useState("");
 
   useEffect(() => {
-    // Обробник для натискання клавіші Escape
     const handleEscapeKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
       }
     };
 
-    // Додаємо обробник події для клавіші Escape, коли модальне вікно відкрите
     if (isOpen) {
       window.addEventListener("keydown", handleEscapeKey);
     }
 
-    // При закритті модального вікна видаляємо обробник
     return () => {
       window.removeEventListener("keydown", handleEscapeKey);
     };
@@ -43,7 +41,6 @@ const Modal: React.FC<ModalProps> = ({
   if (!isOpen) return null;
 
   const handleSubmit = () => {
-    // Перевіряємо заголовок тільки для створення картки
     if (title !== "Видалити картку?" && inputTitle.trim() === "") {
       alert("Заголовок є обов'язковим");
       return;
@@ -65,29 +62,27 @@ const Modal: React.FC<ModalProps> = ({
         <h2>{title}</h2>
 
         <div className={styles.form}>
-          {/* Якщо це не модальне вікно для видалення картки, показуємо поля для заголовка і опису */}
           {title !== "Видалити картку?" && (
             <>
               <input
                 type="text"
                 placeholder="Заголовок картки"
                 value={inputTitle}
-                onChange={(e) => setInputTitle(e.target.value)} // Оновлення заголовка
+                onChange={(e) => setInputTitle(e.target.value)}
               />
               <textarea
                 placeholder="Опис картки"
                 value={inputDescription}
-                onChange={(e) => setInputDescription(e.target.value)} // Оновлення опису
+                onChange={(e) => setInputDescription(e.target.value)}
               />
             </>
           )}
         </div>
         <div className={styles.buttons}>
-          {/* Кнопка підтвердження */}
           <button className={styles.confirmButton} onClick={handleSubmit}>
             {buttonLabel}
           </button>
-          {/* Кнопка скасування, тільки для модального вікна видалення */}
+
           {onCancel && (
             <button className={styles.cancelButton} onClick={onCancel}>
               Скасувати

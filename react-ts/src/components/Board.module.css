@@ -1,22 +1,3 @@
-.board {
-  display: flex;
-  flex-direction: column;
-  padding: 40px;
-  margin: 0 auto;
-  max-width: 1200px;
-  background-color: #fafafa; /* Світлий сірий фон */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.board h3 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
-}
-
 .board-columns {
   display: flex;
   gap: 30px;
@@ -26,27 +7,29 @@
 }
 
 .column {
-  background: #ffffff; /* Білий фон колонок */
+  background: #ffffff;
   border-radius: 8px;
   padding: 20px;
   width: 300px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s ease;
+  min-height: 400px;
 }
 
-.column:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+.boardCard {
+  background-color: #f4f7fc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
-.column h4 {
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #333;
-  font-weight: 600;
+.boardCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .cardList {
@@ -56,23 +39,10 @@
   gap: 15px;
 }
 
-.boardCard {
-  background-color: #f4f7fc; /* Світло-блакитний відтінок картки */
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.boardCard:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 button {
   padding: 8px 15px;
   margin-top: 10px;
-  background-color: #007bff; /* Синій для кнопок */
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 6px;
@@ -80,15 +50,14 @@ button {
   font-size: 14px;
   transition: background-color 0.3s ease;
   width: 100%;
-  box-sizing: border-box;
 }
 
 button:hover {
-  background-color: #0056b3; /* Темніший синій для hover */
+  background-color: #0056b3;
 }
 
 .addCardButton {
-  background-color: #007bff; /* Синій для кнопки додавання */
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -98,13 +67,48 @@ button:hover {
   transition: background-color 0.3s ease;
   margin-top: 10px;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .addCardButton:hover {
-  background-color: #0056b3; /* Темніший синій для hover */
+  background-color: #0056b3;
 }
 
 .addCardButton:focus {
+  outline: none;
+}
+
+.react-dnd-drag-preview {
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+}
+
+.react-dnd-drag-handle {
+  cursor: grab;
+}
+
+.deleteBoardButton {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  width: auto;
+  min-width: 150px;
+  max-width: 200px;
+  margin-top: 20px;
+  display: inline-block;
+  text-align: center;
+}
+
+.deleteBoardButton:hover {
+  background-color: #0056b3;
+}
+
+.deleteBoardButton:focus {
   outline: none;
 }

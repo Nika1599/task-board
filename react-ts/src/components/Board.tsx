@@ -7,15 +7,16 @@ import {
   updateCard,
   deleteCard,
 } from "../store/cardSlice";
+import { deleteBoard } from "../store/boardSlice";
 import BoardCard from "./BoardCard";
 import {
   DragDropContext,
   Droppable,
   Draggable,
   DropResult,
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
 import styles from "./Board.module.css";
-import Modal from "./Modal/Modal"; // ваш компонент модального вікна
+import Modal from "./Modal/Modal";
 
 const Board: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,13 +32,14 @@ const Board: React.FC = () => {
   } = useSelector((state: RootState) => state.card);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<"create" | "delete" | null>(null); // для визначення типу модального вікна
+  const [modalType, setModalType] = useState<
+    "create" | "delete" | "deleteBoard" | null
+  >(null);
   const [columnToAdd, setColumnToAdd] = useState<string>("");
-
-  const [title, setTitle] = useState<string>(""); // Додано для збереження значення заголовка
-  const [description, setDescription] = useState<string>(""); // Додано для збереження опису картки (необов'язково)
-
-  const [cardToDelete, setCardToDelete] = useState<string | null>(null); // картка для видалення
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [cardToDelete, setCardToDelete] = useState<string | null>(null);
+  const [boardToDelete, setBoardToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     if (board?._id) {
@@ -49,7 +51,7 @@ const Board: React.FC = () => {
 
   const handleCreateCard = (column: string) => {
     setColumnToAdd(column);
-    setModalType("create"); // Відкриваємо модальне вікно для створення картки
+    setModalType("create");
     setIsModalOpen(true);
   };
 
@@ -63,32 +65,38 @@ const Board: React.FC = () => {
       createCard({
         boardId: board._id,
         title,
-        description: description || "", // Якщо description не передано, передаємо порожній рядок
+        description: description || "",
         column: columnToAdd,
       })
     );
-    setIsModalOpen(false); // Закрити модальне вікно після створення картки
-    setTitle(""); // Очистити значення заголовка після створення
-    setDescription(""); // Очистити опис після створення
+    setIsModalOpen(false);
+    setTitle("");
+    setDescription("");
   };
 
   const handleDeleteCard = (cardId: string) => {
     setCardToDelete(cardId);
-    setModalType("delete"); // Відкриваємо модальне вікно для підтвердження видалення
+    setModalType("delete");
     setIsModalOpen(true);
   };
 
   const confirmDeleteCard = () => {
     if (cardToDelete) {
       dispatch(deleteCard(cardToDelete));
-      setIsModalOpen(false); // Закриваємо модальне вікно після видалення
-      setCardToDelete(null); // Скидаємо картку для видалення
+      setIsModalOpen(false);
+      setCardToDelete(null);
     }
   };
 
   const cancelDeleteCard = () => {
-    setIsModalOpen(false); // Закриваємо модальне вікно без змін
-    setCardToDelete(null); // Скидаємо картку для видалення
+    setIsModalOpen(false);
+    setCardToDelete(null);
+  };
+
+  const handleDeleteBoard = () => {
+    if (board._id) {
+      dispatch(deleteBoard(board._id));
+    }
   };
 
   const handleOnDragEnd = (result: DropResult) => {
@@ -108,17 +116,6 @@ const Board: React.FC = () => {
     }
   };
 
-  // Функція для обробки натискання клавіші Enter
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLButtonElement | HTMLDivElement>,
-    action: () => void
-  ) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Забороняємо стандартну поведінку
-      action(); // Викликаємо передану функцію
-    }
-  };
-
   return (
     <div className={styles.board}>
       {boardLoading && <p>Завантаження дошки...</p>}
@@ -128,13 +125,19 @@ const Board: React.FC = () => {
 
       <div>
         <h3>{board.name}</h3>
+        <button
+          className={styles.deleteBoardButton}
+          onClick={handleDeleteBoard}
+        >
+          Видалити дошку
+        </button>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <div className={styles["board-columns"]}>
             {["ToDo", "InProgress", "Done"].map((column) => (
               <Droppable
                 droppableId={column}
                 key={column}
-                isCombineEnabled={false} // Додано для уникнення помилки
+                isCombineEnabled={false}
               >
                 {(provided) => (
                   <div
@@ -147,9 +150,6 @@ const Board: React.FC = () => {
                       <button
                         className={styles.addCardButton}
                         onClick={() => handleCreateCard(column)}
-                        onKeyDown={(e) =>
-                          handleKeyDown(e, () => handleCreateCard(column))
-                        }
                       >
                         + Додати картку
                       </button>
@@ -169,19 +169,9 @@ const Board: React.FC = () => {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 className={styles.boardCard}
+                                style={provided.draggableProps.style}
                               >
                                 <BoardCard card={card} />
-                                <button
-                                  className={styles.deleteButton}
-                                  onClick={() => handleDeleteCard(card._id)}
-                                  onKeyDown={(e) =>
-                                    handleKeyDown(e, () =>
-                                      handleDeleteCard(card._id)
-                                    )
-                                  }
-                                >
-                                  Видалити
-                                </button>
                               </div>
                             )}
                           </Draggable>
@@ -196,7 +186,6 @@ const Board: React.FC = () => {
         </DragDropContext>
       </div>
 
-      {/* Модальне вікно для створення картки або підтвердження видалення */}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
@@ -204,12 +193,44 @@ const Board: React.FC = () => {
           onSubmit={
             modalType === "create" ? handleModalSubmit : confirmDeleteCard
           }
-          onCancel={modalType === "delete" ? cancelDeleteCard : undefined}
+          onCancel={
+            modalType === "delete"
+              ? cancelDeleteCard
+              : modalType === "deleteBoard"
+              ? cancelDeleteBoard
+              : undefined
+          }
           title={
-            modalType === "create" ? "Створити нову картку" : "Видалити картку?"
+            modalType === "create"
+              ? "Створити нову картку"
+              : modalType === "delete"
+              ? "Видалити картку?"
+              : "Видалити дошку?"
           }
           buttonLabel={modalType === "create" ? "Створити" : "Видалити"}
-        />
+        >
+          {modalType === "create" && (
+            <div>
+              <input
+                type="text"
+                placeholder="Заголовок картки"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="inputField"
+              />
+              <textarea
+                placeholder="Опис картки"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="inputField"
+              />
+            </div>
+          )}
+
+          {modalType === "deleteBoard" && (
+            <p>Ви впевнені, що хочете видалити цю дошку?</p>
+          )}
+        </Modal>
       )}
     </div>
   );

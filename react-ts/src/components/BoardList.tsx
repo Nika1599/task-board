@@ -16,14 +16,14 @@ const BoardList = () => {
   const handleFetchBoard = () => {
     if (boardId.trim()) {
       dispatch(fetchBoard(boardId.trim()));
-      setBoardId(""); // Очищаємо поле ID після пошуку
+      setBoardId("");
     }
   };
 
   const handleCreateBoard = () => {
     if (boardName.trim()) {
       dispatch(createBoard(boardName.trim()));
-      setBoardName(""); // Очищаємо поле після створення
+      setBoardName("");
     }
   };
 
@@ -35,12 +35,11 @@ const BoardList = () => {
   };
 
   const handleGoBack = () => {
-    setBoardId(""); // Очищаємо поле ID дошки
-    setBoardName(""); // Очищаємо поле для назви нової дошки
+    setBoardId("");
+    setBoardName("");
     dispatch(resetBoard());
   };
 
-  // Функція обробки натискання клавіші Enter
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>,
     action: () => void
@@ -52,10 +51,7 @@ const BoardList = () => {
 
   return (
     <div className={styles.boardList}>
-      {/* Заголовок "Керування Дошками" відображається тільки якщо дошка не існує */}
       {!board && <h3 className={styles.header}>Керування Дошками</h3>}
-
-      {/* Якщо дошки ще немає, показуємо поле для пошуку */}
       {!board && (
         <div className={styles.inputGroup}>
           <input
@@ -63,24 +59,22 @@ const BoardList = () => {
             placeholder="Введіть ID дошки"
             value={boardId}
             onChange={(e) => setBoardId(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)} // Додаємо обробник для Enter
+            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)}
             className={styles.inputField}
           />
           <button
             onClick={handleFetchBoard}
             className={styles.button}
-            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)} // Обробник для кнопки
+            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)}
           >
             🔍 Знайти
           </button>
         </div>
       )}
 
-      {/* Повідомлення про стан */}
       {loading && <p className={styles.loadingMessage}>Завантаження...</p>}
       {error && <p className={styles.errorMessage}>{error}</p>}
 
-      {/* Відображення знайденої або створеної дошки */}
       {board && (
         <div className={styles.boardInfo}>
           <h3 className={styles.boardName}>Дошка: {board.name}</h3>
@@ -90,28 +84,27 @@ const BoardList = () => {
               📋 Копіювати
             </button>
           </p>
-          {/* Кнопка для повернення назад */}
+
           <button onClick={handleGoBack} className={styles.goBackButton}>
             ↩️ Повернення назад
           </button>
         </div>
       )}
 
-      {/* Поле створення нової дошки (завжди доступне, тільки якщо дошки ще немає) */}
       {!board && (
         <div className={styles.inputGroup}>
           <input
             type="text"
             value={boardName}
             onChange={(e) => setBoardName(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, handleCreateBoard)} // Додаємо обробник для Enter
+            onKeyDown={(e) => handleKeyDown(e, handleCreateBoard)}
             placeholder="Введіть назву нової дошки"
             className={styles.inputField}
           />
           <button
             onClick={handleCreateBoard}
             className={styles.button}
-            onKeyDown={(e) => handleKeyDown(e, handleCreateBoard)} // Обробник для кнопки
+            onKeyDown={(e) => handleKeyDown(e, handleCreateBoard)}
           >
             ➕ Створити
           </button>

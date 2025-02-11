@@ -10,7 +10,6 @@ const handleAxiosError = (error: unknown): string => {
   return axiosError.response?.data?.message || "Unknown error occurred";
 };
 
-// Запит для отримання борду за ID
 export const fetchBoard = createAsyncThunk<
   Board,
   string,
@@ -24,7 +23,6 @@ export const fetchBoard = createAsyncThunk<
   }
 });
 
-// Запит для створення борду
 export const createBoard = createAsyncThunk<
   Board,
   string,
@@ -38,7 +36,6 @@ export const createBoard = createAsyncThunk<
   }
 });
 
-// Запит для видалення борду
 export const deleteBoard = createAsyncThunk<
   string,
   string,
