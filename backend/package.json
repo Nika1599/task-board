@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint 'src/**/*.{ts,js}'",
     "format": "prettier --write 'src/**/*.{ts,js}'",
-    "postinstall": "npm install -g nodemon"
+    "postinstall": "chmod +x node_modules/.bin/nodemon"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
