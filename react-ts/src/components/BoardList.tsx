@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBoard, fetchBoard, resetBoard } from "../store/boardSlice";
-import { RootState, AppDispatch } from "../store/store";
+import { createBoard, fetchBoard, resetBoard } from "../store/boardSlice.ts";
+import { RootState, AppDispatch } from "../store/store.ts";
 import styles from "./BoardList.module.css";
 
 const BoardList = () => {

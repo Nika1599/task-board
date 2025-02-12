@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "build/dist",
-    "module": "esnext",
+    "module": "Node16",
     "target": "es6",
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,

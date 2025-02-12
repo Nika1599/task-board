@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { boardReducer } from "./boardSlice";
-import { cardReducer } from "./cardSlice";
+import { boardReducer } from "./boardSlice.ts";
+import { cardReducer } from "./cardSlice.ts";
 
 export const store = configureStore({
   reducer: { board: boardReducer, card: cardReducer },

@@ -9,7 +9,7 @@ export const initMongoDB = async () => {
     const db = getEnvVar('MONGODB_DB');
     const mongoUri = `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority`;
 
-    console.log('Connecting to MongoDB at:', mongoUri); // Для дебагу
+    console.log('Connecting to MongoDB at:', mongoUri);
 
     await mongoose.connect(mongoUri);
     console.log('MongoDB connection successfully established!');

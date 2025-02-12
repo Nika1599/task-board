@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AxiosError } from "axios";
-import { Card } from "../types/types";
+import { Card } from "../types/types.ts";
 
 const API_URL = "http://localhost:5000/api/cards";
 

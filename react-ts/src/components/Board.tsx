@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { RootState, AppDispatch } from "../store/store";
+import { RootState, AppDispatch } from "../store/store.ts";
 import {
   createCard,
   fetchCards,
   updateCard,
   deleteCard,
-} from "../store/cardSlice";
-import { deleteBoard } from "../store/boardSlice";
-import BoardCard from "./BoardCard";
+} from "../store/cardSlice.ts";
+import { deleteBoard } from "../store/boardSlice.ts";
+import BoardCard from "./BoardCard.tsx";
 import {
   DragDropContext,
   Droppable,
@@ -16,7 +16,7 @@ import {
   DropResult,
 } from "@hello-pangea/dnd";
 import styles from "./Board.module.css";
-import Modal from "./Modal/Modal";
+import Modal from "./Modal/Modal.tsx";
 
 const Board: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +38,6 @@ const Board: React.FC = () => {
   const [columnToAdd, setColumnToAdd] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [cardToDelete, setCardToDelete] = useState<string | null>(null);
   const [boardToDelete, setBoardToDelete] = useState<string | null>(null);
 
   useEffect(() => {
@@ -74,23 +73,17 @@ const Board: React.FC = () => {
     setDescription("");
   };
 
-  const handleDeleteCard = (cardId: string) => {
-    setCardToDelete(cardId);
-    setModalType("delete");
-    setIsModalOpen(true);
-  };
-
   const confirmDeleteCard = () => {
-    if (cardToDelete) {
-      dispatch(deleteCard(cardToDelete));
+    if (boardToDelete) {
+      dispatch(deleteCard(boardToDelete));
       setIsModalOpen(false);
-      setCardToDelete(null);
+      setBoardToDelete(null);
     }
   };
 
-  const cancelDeleteCard = () => {
+  const cancelDeleteBoard = () => {
     setIsModalOpen(false);
-    setCardToDelete(null);
+    setBoardToDelete(null);
   };
 
   const handleDeleteBoard = () => {
@@ -195,7 +188,7 @@ const Board: React.FC = () => {
           }
           onCancel={
             modalType === "delete"
-              ? cancelDeleteCard
+              ? cancelDeleteBoard
               : modalType === "deleteBoard"
               ? cancelDeleteBoard
               : undefined

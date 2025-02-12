@@ -1,6 +1,6 @@
 import "./App.css";
-import BoardList from "./components/BoardList";
-import Board from "./components/Board";
+import BoardList from "./components/BoardList.tsx";
+import Board from "./components/Board.tsx";
 
 function App() {
   return (

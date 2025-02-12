@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Card } from "../types/types";
+import { Card } from "../types/types.ts";
 import styles from "./BoardCard.module.css";
 import { useDispatch } from "react-redux";
-import { updateCard, deleteCard } from "../store/cardSlice";
-import { AppDispatch } from "../store/store";
+import { updateCard, deleteCard } from "../store/cardSlice.ts";
+import { AppDispatch } from "../store/store.ts";
 
 interface BoardCardProps {
   card: Card;
