@@ -4,9 +4,9 @@
   "description": "Backend for Kanban board app",
   "main": "src/server.ts",
   "scripts": {
+    "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "npx tsc",
     "lint": "eslint 'src/**/*.{ts,js}'",
     "format": "prettier --write 'src/**/*.{ts,js}'",
     "postinstall": "chmod +x node_modules/.bin/nodemon"
