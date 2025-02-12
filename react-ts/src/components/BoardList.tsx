@@ -59,13 +59,12 @@ const BoardList = () => {
             placeholder="Введіть ID дошки"
             value={boardId}
             onChange={(e) => setBoardId(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)}
+            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)} // for input, use onKeyDown
             className={styles.inputField}
           />
           <button
-            onClick={handleFetchBoard}
+            onClick={handleFetchBoard} // handle click, no need for onKeyDown here
             className={styles.button}
-            onKeyDown={(e) => handleKeyDown(e, handleFetchBoard)}
           >
             🔍 Знайти
           </button>
@@ -101,11 +100,7 @@ const BoardList = () => {
             placeholder="Введіть назву нової дошки"
             className={styles.inputField}
           />
-          <button
-            onClick={handleCreateBoard}
-            className={styles.button}
-            onKeyDown={(e) => handleKeyDown(e, handleCreateBoard)}
-          >
+          <button onClick={handleCreateBoard} className={styles.button}>
             ➕ Створити
           </button>
         </div>

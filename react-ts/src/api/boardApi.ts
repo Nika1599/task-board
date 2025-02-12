@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Board } from "../types/types";
+import { Board } from "../types/types.ts";
 
 const API_URL = "http://localhost:5000/api/boards";
 
